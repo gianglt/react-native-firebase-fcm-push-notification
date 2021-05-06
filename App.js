@@ -26,6 +26,11 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import firebase from 'react-native-firebase';
 
+
+API_TOKEN = 'http://lienchieu.dieuhanhvp.net/api/MessageTest/GetToken'
+
+
+
 const App = () => {
   useEffect(() => {
     console.log('Log');
@@ -46,6 +51,20 @@ const App = () => {
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
       console.log(fcmToken);
+
+      let dataToSend = {token: fcmToken};
+      let jsonBody = JSON.stringify(dataToSend);
+  
+      fetch(API_TOKEN, {
+        method: 'POST',
+        body: jsonBody,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+  
+
       this.showAlert('Your Firebase Token is:', fcmToken);
     } else {
       this.showAlert('Failed', 'No token received');
